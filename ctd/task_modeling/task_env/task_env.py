@@ -590,7 +590,7 @@ class RandomTarget_CO(Environment):
         start_xy =  torch.tensor([[0,0]], dtype=torch.float32, device=self.device)
 
         info = dict(
-            #ics_joint=angs,
+            ics_joint=random_condition,
             ics_xy=start_xy,
             goal=target_pos,
         )
