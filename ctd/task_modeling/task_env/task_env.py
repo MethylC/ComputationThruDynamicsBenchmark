@@ -557,6 +557,22 @@ class RandomTarget_CO(Environment):
         }
         extra_dict = {}
         return dataset_dict, extra_dict
+    
+    def cer2ang(self,x,y):
+        sho_limit = [0, 135]  # mechanical constraints - used to be -90 180
+        elb_limit = [0, 155]
+        for isho in np.deg2rad(sho_limit[0] + 30, sho_limit[1] - 30):
+            for ielb in np.deg2rad(elb_limit[0] + 30, elb_limit[1] - 30):
+                 angs = torch.tensor(np.array([isho, ielb, 0, 0]))
+                 target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
+                 if round(target_pos[0][0].item(),2)==round(x,2) and round(target_pos[0][1].item(),2)==round(y,2):
+                     sho = isho
+                     elb = ielb
+                     found = True
+                     break
+            if found:
+                break
+        return sho,elb
 
     def generate_trial_info(self):
         """
@@ -583,18 +599,69 @@ class RandomTarget_CO(Environment):
         angle = np.pi / 4
         posx = np.sin(angle*random_condition)
         posy = np.cos(angle*random_condition)
+        
 
         
         target_pos = torch.tensor([[posx,posy]], dtype=torch.float32, device=self.device)
-
         start_xy =  torch.tensor([[0,0]], dtype=torch.float32, device=self.device)
+        
+        sho_limit = [0, 135]  # mechanical constraints - used to be -90 180
+        elb_limit = [0, 155]
+        for isho in np.deg2rad(sho_limit[0] + 30, sho_limit[1] - 30):
+            for ielb in np.deg2rad(elb_limit[0] + 30, elb_limit[1] - 30):
+                 angs = torch.tensor(np.array([isho, ielb, 0, 0]))
+                 target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
+                 if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0,2):
+                     sho = isho
+                     elb = ielb
+                     found = True
+                     break
+            if found:
+                break
+        
+        angs = torch.tensor(np.array([sho, elb, 0, 0]))
+
 
         info = dict(
-            ics_joint=random_condition,
+            ics_joint=angs,
             ics_xy=start_xy,
             goal=target_pos,
         )
         return info
+        # """
+        # Generate a trial for the task.
+        # This is a reach to a random target from a random starting
+        # position with a delay period.
+        # """
+        # sho_limit = [0, 135]  # mechanical constraints - used to be -90 180
+        # elb_limit = [0, 155]
+        # sho_ang = np.deg2rad(np.random.uniform(sho_limit[0] + 30, sho_limit[1] - 30))
+        # elb_ang = np.deg2rad(np.random.uniform(elb_limit[0] + 30, elb_limit[1] - 30))
+
+        # sho_ang_targ = np.deg2rad(
+        #     np.random.uniform(sho_limit[0] + 30, sho_limit[1] - 30)
+        # )
+        # elb_ang_targ = np.deg2rad(
+        #     np.random.uniform(elb_limit[0] + 30, elb_limit[1] - 30)
+        # )
+
+        # angs = torch.tensor(np.array([sho_ang, elb_ang, 0, 0]))
+        # ang_targ = torch.tensor(np.array([sho_ang_targ, elb_ang_targ, 0, 0]))
+
+        # target_pos = self.joint2cartesian(
+        #     torch.tensor(ang_targ, dtype=torch.float32, device=self.device)
+        # ).chunk(2, dim=-1)[0]
+
+        # start_xy = self.joint2cartesian(
+        #     torch.tensor(angs, dtype=torch.float32, device=self.device)
+        # ).chunk(2, dim=-1)[0]
+
+        # info = dict(
+        #     ics_joint=angs,
+        #     ics_xy=start_xy,
+        #     goal=target_pos,
+        # )
+        # return info
 
     def set_goal(
         self,
