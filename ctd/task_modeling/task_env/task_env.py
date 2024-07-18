@@ -619,7 +619,7 @@ class RandomTarget_CO(Environment):
             if found:
                 break
         
-        angs = torch.tensor(np.array([sho, elb, 0, 0]))
+        angs = torch.tensor(np.array([0, 0, 0, 0]))
 
 
         info = dict(
