@@ -568,19 +568,29 @@ class RandomTarget_CO(Environment):
         sho_ang = np.deg2rad(30)
         elb_ang = np.deg2rad(120)
 
-        sho_ang_targ = np.deg2rad(
-            np.random.uniform(sho_limit[0] + 30, sho_limit[1] - 30)
-        )
-        elb_ang_targ = np.deg2rad(
-            np.random.uniform(elb_limit[0] + 30, elb_limit[1] - 30)
-        )
+        # sho_ang_targ = np.deg2rad(
+        #     np.random.uniform(sho_limit[0] + 30, sho_limit[1] - 30)
+        # )
+        # elb_ang_targ = np.deg2rad(
+        #     np.random.uniform(elb_limit[0] + 30, elb_limit[1] - 30)
+        # )
 
         angs = torch.tensor(np.array([sho_ang, elb_ang, 0, 0]))
-        ang_targ = torch.tensor(np.array([sho_ang_targ, elb_ang_targ, 0, 0]))
+        # ang_targ = torch.tensor(np.array([sho_ang_targ, elb_ang_targ, 0, 0]))
 
-        target_pos = self.joint2cartesian(
-            torch.tensor(ang_targ, dtype=torch.float32, device=self.device)
-        ).chunk(2, dim=-1)[0]
+        # target_pos = self.joint2cartesian(
+        #     torch.tensor(ang_targ, dtype=torch.float32, device=self.device)
+        # ).chunk(2, dim=-1)[0]
+
+        conditions =  [1, 2, 3, 4, 5, 6, 7, 8] 
+        random_condition = np.random.choice(conditions)
+        angle = np.pi / 4
+        posx = np.sin(angle*random_condition)
+        posy = np.cos(angle*random_condition)
+        
+
+        
+        target_pos = torch.tensor([[posx,posy]], dtype=torch.float32, device=self.device)
 
         start_xy = self.joint2cartesian(
             torch.tensor(angs, dtype=torch.float32, device=self.device)
