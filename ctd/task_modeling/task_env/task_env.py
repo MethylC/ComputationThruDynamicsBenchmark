@@ -582,11 +582,11 @@ class RandomTarget_CO(Environment):
         #     torch.tensor(ang_targ, dtype=torch.float32, device=self.device)
         # ).chunk(2, dim=-1)[0]
 
-        conditions =  [1, 5,] 
+        conditions =  [1,2,3,4,5,6,7,8] 
         random_condition = np.random.choice(conditions)
         angle = np.pi / 4
         posx = np.sin(angle*random_condition)
-        posy = np.cos(angle*random_condition)
+        posy = np.cos(angle*random_condition) + 0.5
         
 
         
