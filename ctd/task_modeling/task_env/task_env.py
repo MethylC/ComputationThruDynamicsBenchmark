@@ -565,8 +565,8 @@ class RandomTarget_CO(Environment):
         """
         sho_limit = [0, 135]  # mechanical constraints - used to be -90 180
         elb_limit = [0, 155]
-        sho_ang = 0.1003
-        elb_ang = -0.5143
+        sho_ang = 0.6352998477259375 
+        elb_ang = 1.5760323145508948
         ifound = 0
 
         # for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
