@@ -598,8 +598,8 @@ class RandomTarget_CO(Environment):
         conditions =  [1,2,3,4,5,6,7,8] 
         random_condition = np.random.choice(conditions)
         angle = np.pi / 4
-        posx = 0.7*np.sin(angle*random_condition)
-        posy = 0.7*np.cos(angle*random_condition) + 0.5
+        posx = 0.5*np.sin(angle*random_condition)
+        posy = 0.5*np.cos(angle*random_condition) + 0.5
         
 
         
