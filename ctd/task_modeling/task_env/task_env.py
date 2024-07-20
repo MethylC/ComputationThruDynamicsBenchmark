@@ -567,7 +567,7 @@ class RandomTarget_CO(Environment):
         elb_limit = [0, 155]
         sho_ang = np.deg2rad(30)
         elb_ang = np.deg2rad(120)
-        found = False
+        ifound = 0
 
         for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
             for ielb in np.arange(elb_limit[0] + 30, elb_limit[1] - 30, 0.1):
@@ -576,9 +576,9 @@ class RandomTarget_CO(Environment):
                  if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0.5,2):
                      sho_ang = isho
                      elb_ang = ielb
-                     found = True
+                     ifound = 1
                      break
-            if found:
+            if ifound == 1:
                 break
 
         # sho_ang_targ = np.deg2rad(
