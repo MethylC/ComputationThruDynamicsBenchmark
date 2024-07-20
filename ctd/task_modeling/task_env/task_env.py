@@ -655,6 +655,7 @@ class RandomTarget_CO(Environment):
         """
         sho_limit = np.deg2rad([0, 135])  # mechanical constraints - used to be -90 180
         elb_limit = np.deg2rad([0, 155])
+
         # Make self.obs_noise a list
         self._set_generator(seed=seed)
         # if ic_state is in options, use that
@@ -703,6 +704,24 @@ class RandomTarget_CO(Environment):
         self.obs_buffer["action"] = [action] * self.action_frame_stacking
 
         action = action if self.differentiable else self.detach(action)
+
+        ifound = 0
+        for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
+            for ielb in np.arange(elb_limit[0] + 30, elb_limit[1] - 30, 0.1):
+                    angs = torch.tensor(np.array([np.deg2rad(isho), np.deg2rad(ielb), 0, 0]))
+                    target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
+                    if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0.5,2):
+                        sho_ang = isho
+                        elb_ang = ielb
+                        ifound = 1
+                        break
+            if ifound == 1:
+                break
+        
+        angs = np.stack((sho_ang, elb_ang, sho_vel, elb_vel), axis=1)
+        self.goal = self.joint2cartesian(
+                torch.tensor(angs, dtype=torch.float32, device=self.device)
+            ).chunk(2, dim=-1)[0]
 
         obs = self.get_obs(deterministic=deterministic)
         info = {
