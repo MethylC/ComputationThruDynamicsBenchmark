@@ -568,6 +568,18 @@ class RandomTarget_CO(Environment):
         sho_ang = np.deg2rad(30)
         elb_ang = np.deg2rad(120)
 
+        for isho in np.arrange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
+            for ielb in np.arrange(elb_limit[0] + 30, elb_limit[1] - 30, 0.1):
+                 angs = torch.tensor(np.array([np.deg2rad(isho), np.deg2rad(ielb), 0, 0]))
+                 target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
+                 if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0.5,2):
+                     sho_ang = isho
+                     elb_ang = ielb
+                     found = True
+                     break
+            if found:
+                break
+
         # sho_ang_targ = np.deg2rad(
         #     np.random.uniform(sho_limit[0] + 30, sho_limit[1] - 30)
         # )
