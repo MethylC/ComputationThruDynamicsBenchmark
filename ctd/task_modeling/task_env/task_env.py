@@ -565,21 +565,21 @@ class RandomTarget_CO(Environment):
         """
         sho_limit = [0, 135]  # mechanical constraints - used to be -90 180
         elb_limit = [0, 155]
-        sho_ang = np.deg2rad(30)
-        elb_ang = np.deg2rad(120)
+        sho_ang = 0.1003
+        elb_ang = -0.5143
         ifound = 0
 
-        for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
-            for ielb in np.arange(elb_limit[0] + 30, elb_limit[1] - 30, 0.1):
-                 angs = torch.tensor(np.array([np.deg2rad(isho), np.deg2rad(ielb), 0, 0]))
-                 target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
-                 if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0.5,2):
-                     sho_ang = isho
-                     elb_ang = ielb
-                     ifound = 1
-                     break
-            if ifound == 1:
-                break
+        # for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
+        #     for ielb in np.arange(elb_limit[0] + 30, elb_limit[1] - 30, 0.1):
+        #          angs = torch.tensor(np.array([np.deg2rad(isho), np.deg2rad(ielb), 0, 0]))
+        #          target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
+        #          if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0.5,2):
+        #              sho_ang = isho
+        #              elb_ang = ielb
+        #              ifound = 1
+        #              break
+        #     if ifound == 1:
+        #         break
 
         # sho_ang_targ = np.deg2rad(
         #     np.random.uniform(sho_limit[0] + 30, sho_limit[1] - 30)
@@ -705,23 +705,23 @@ class RandomTarget_CO(Environment):
 
         action = action if self.differentiable else self.detach(action)
 
-        ifound = 0
-        for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
-            for ielb in np.arange(elb_limit[0] + 30, elb_limit[1] - 30, 0.1):
-                    angs = torch.tensor(np.array([np.deg2rad(isho), np.deg2rad(ielb), 0, 0]))
-                    target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
-                    if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0.5,2):
-                        sho_ang = isho
-                        elb_ang = ielb
-                        ifound = 1
-                        break
-            if ifound == 1:
-                break
+        # ifound = 0
+        # for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
+        #     for ielb in np.arange(elb_limit[0] + 30, elb_limit[1] - 30, 0.1):
+        #             angs = torch.tensor(np.array([np.deg2rad(isho), np.deg2rad(ielb), 0, 0]))
+        #             target_pos = self.joint2cartesian(torch.tensor(angs, dtype=torch.float32, device=self.device)).chunk(2, dim=-1)[0]
+        #             if round(target_pos[0][0].item(),2)==round(0,2) and round(target_pos[0][1].item(),2)==round(0.5,2):
+        #                 sho_ang = isho
+        #                 elb_ang = ielb
+        #                 ifound = 1
+        #                 break
+        #     if ifound == 1:
+        #         break
         
-        angs = np.stack((sho_ang, elb_ang, sho_vel, elb_vel), axis=1)
-        self.goal = self.joint2cartesian(
-                torch.tensor(angs, dtype=torch.float32, device=self.device)
-            ).chunk(2, dim=-1)[0]
+        # angs = np.stack((sho_ang, elb_ang, sho_vel, elb_vel), axis=1)
+        # self.goal = self.joint2cartesian(
+        #         torch.tensor(angs, dtype=torch.float32, device=self.device)
+        #     ).chunk(2, dim=-1)[0]
 
         obs = self.get_obs(deterministic=deterministic)
         info = {
