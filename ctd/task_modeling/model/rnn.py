@@ -205,7 +205,8 @@ class LSTM(nn.Module):
 
     def forward(self, inputs, hidden):
         hidden = self.cell(inputs, hidden)
-        output = self.readout(hidden)
+        h,c = hidden
+        output = self.readout(h)
         return output, hidden
 
             
