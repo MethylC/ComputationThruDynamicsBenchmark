@@ -198,9 +198,9 @@ class LSTM(nn.Module):
         self.cell = LSTMCell(input_size, self.latent_size)
         self.readout = nn.Linear(self.latent_size, output_size, bias=True)
 
-    def init_hidden(self, batch_size,latent_size):
-        H = torch.zeros(batch_size,latent_size)
-        C = torch.zeros(batch_size,latent_size)
+    def init_hidden(self, batch_size):
+        H = torch.zeros(batch_size,self.latent_size)
+        C = torch.zeros(batch_size,self.latent_size)
         return (H,C)
 
     def forward(self, inputs, hidden):
