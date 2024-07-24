@@ -124,7 +124,10 @@ class TaskTrainedWrapper(pl.LightningModule):
 
         # Call initializations (if they exist)
         if hasattr(self.model, "init_hidden"):
-            hidden = self.model.init_hidden(batch_size=batch_size).to(self.device)
+            if isinstance(hidden,tuple):
+                hidden = self.model.init_hidden(batch_size=batch_size)
+            else:
+                hidden = self.model.init_hidden(batch_size=batch_size).to(self.device)
         else:
             hidden = torch.zeros(batch_size, self.latent_size).to(self.device)
 
