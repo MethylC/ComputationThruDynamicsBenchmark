@@ -182,32 +182,21 @@ class Vanilla_RNN(nn.Module):
         return output, hidden
 
 class LSTM(nn.Module):
-    def __init__(
-        self, latent_size, input_size=None, output_size=None, latent_ic_var=0.05
-    ):
+    def __init__(self, latent_size, input_size=None, output_size=None):
         super().__init__()
         self.input_size = input_size
         self.latent_size = latent_size
         self.output_size = output_size
         self.cell = None
         self.readout = None
-        self.latent_ics = torch.nn.Parameter(
-            torch.zeros(latent_size), requires_grad=True
-        )
-        self.latent_ic_var = latent_ic_var
 
     def init_model(self, input_size, output_size):
         self.input_size = input_size
         self.output_size = output_size
         self.cell = LSTMCell(input_size, self.latent_size)
-        self.readout = nn.Linear(self.latent_size, output_size, bias=True)
+        self.readout = nn.Linear(self.latent_size, output_size)
 
-    def init_hidden(self, batch_size):
-        init_h = self.latent_ics.unsqueeze(0).expand(batch_size, -1)
-        ic_noise = torch.randn_like(init_h) * self.latent_ic_var
-        return init_h + ic_noise
-
-    def forward(self, inputs, hidden):
+    def forward(self, inputs, hidden=None):
         hidden = self.cell(inputs, hidden)
         output = self.readout(hidden)
         return output, hidden
