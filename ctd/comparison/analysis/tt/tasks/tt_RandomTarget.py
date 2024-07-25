@@ -250,6 +250,61 @@ class TT_RandomTarget(Analysis_TT):
         ax.set_xlabel("Time (bins)")
         ax.set_ylabel("Environment Inputs")
 
+    def plot_trial_all(self, trial_1,trial_2):
+        # plot the trial
+        # get the trial
+        tt_ics, tt_inputs, tt_targets = self.get_model_inputs()
+        inputs_to_env = self.get_inputs_to_env()
+        tt_extra = self.get_extra_inputs()
+        out_dict = self.wrapper(tt_ics, tt_inputs, inputs_to_env=inputs_to_env)
+        controlled = out_dict["controlled"]
+        states = out_dict["states"]
+
+        fig = plt.figure(figsize=(5, 8))
+        # Put a square at the start location (targets_trial)
+        ax = fig.add_subplot(311)
+
+        for trial_num in np.arange(trial_1,trial_2,1):
+            
+            targets_trial = tt_targets[trial_num, :, :].detach().numpy()
+            controlled_trial = controlled[trial_num, :, :].detach().numpy()
+
+            # plot the trial
+
+            ax.plot(
+                targets_trial[0, 0],
+                targets_trial[0, 1],
+                marker="s",
+                color="r",
+                markersize=10,
+            )
+            ax.plot(
+                targets_trial[-1, 0],
+                targets_trial[-1, 1],
+                marker="s",
+                color="g",
+                markersize=8,
+            )
+
+            ax.plot(
+                controlled_trial[:, 0],
+                controlled_trial[:, 1],
+                color="k",
+                # dashed line
+                linestyle="--",
+            )
+
+
+        ax.set_aspect("equal")
+        ax.set_xlabel("X Position (cm)")
+        ax.set_ylabel("Y Position (cm)")
+        ax.set_title(f"Trial {trial_num}")
+        ax.set_xlim([-1.2, 1.2])
+        ax.set_ylim([-0.2, 1.2])
+        ax.set_xticks([-1, 0, 1])
+        ax.set_yticks([0, 1])
+        # Tight layout
+
     def generate_latent_video(
         self,
         align_to="go_cue",
