@@ -302,7 +302,7 @@ class TT_RandomTarget(Analysis_TT):
         ax.set_xlim([-0.5, 0.5])
         ax.set_ylim([0.25, 0.75])
         ax.set_xticks([-0.5, 0, 0.5])
-        ax.set_yticks([0.25, 0.75])
+        ax.set_yticks([-0.25, 0.7])
         # Tight layout
 
     def generate_latent_video(
