@@ -298,9 +298,9 @@ class TT_RandomTarget(Analysis_TT):
         ax.set_aspect("equal")
         ax.set_xlabel("X Position (cm)")
         ax.set_ylabel("Y Position (cm)")
-        ax.set_title(f"Trial {trial_num}")
-        ax.set_xlim([-0.3, 0.3])
-        ax.set_ylim([0.15, 0.75])
+        ax.set_title(f"Trial {trial_1} - {trial_2}")
+        ax.set_xlim([-0.2, 0.2])
+        ax.set_ylim([0.25, 0.65])
         ax.set_xticks([-0.3, 0, 0.3])
         ax.set_yticks([0.15, 0.75])
         # Tight layout
