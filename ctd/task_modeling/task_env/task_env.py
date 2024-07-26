@@ -563,10 +563,10 @@ class RandomTarget_CO(Environment):
         This is a reach to a random target from a random starting
         position with a delay period.
         """
-        sho_limit = [0, 135]  # mechanical constraints - used to be -90 180
-        elb_limit = [0, 155]
-        sho_ang = np.deg2rad(48.5)
-        elb_ang = np.deg2rad(78.6)
+        sho_limit = [-90, 180]  # mechanical constraints - used to be -90 180
+        elb_limit = [0, 180]
+        sho_ang = np.deg2rad(16.5)
+        elb_ang = np.deg2rad(134.6)
         ifound = 0
 
         # for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
@@ -598,8 +598,8 @@ class RandomTarget_CO(Environment):
         conditions =  [1,2,3,4,5,6,7,8] 
         random_condition = np.random.choice(conditions)
         angle = np.pi / 4
-        posx = 0.5*np.sin(angle*random_condition)
-        posy = 0.5*np.cos(angle*random_condition) + 0.5
+        posx = 0.2*np.sin(angle*random_condition)
+        posy = 0.2*np.cos(angle*random_condition) + 0.25
         
 
         
