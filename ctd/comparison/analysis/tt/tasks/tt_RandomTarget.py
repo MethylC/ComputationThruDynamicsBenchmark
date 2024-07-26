@@ -299,10 +299,10 @@ class TT_RandomTarget(Analysis_TT):
         ax.set_xlabel("X Position (cm)")
         ax.set_ylabel("Y Position (cm)")
         ax.set_title(f"Trial {trial_num}")
-        ax.set_xlim([-0.5, 0.5])
-        ax.set_ylim([0.25, 0.75])
-        ax.set_xticks([-0.5, 0, 0.5])
-        ax.set_yticks([-0.25, 0.7])
+        ax.set_xlim([-0.3, 0.3])
+        ax.set_ylim([0.15, 0.75])
+        ax.set_xticks([-0.3, 0, 0.3])
+        ax.set_yticks([0.15, 0.75])
         # Tight layout
 
     def generate_latent_video(

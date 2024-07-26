@@ -565,8 +565,8 @@ class RandomTarget_CO(Environment):
         """
         sho_limit = [-90, 180]  # mechanical constraints - used to be -90 180
         elb_limit = [0, 180]
-        sho_ang = np.deg2rad(16.5)
-        elb_ang = np.deg2rad(134.6)
+        sho_ang = np.deg2rad(41.4)
+        elb_ang = np.deg2rad(91.7)
         ifound = 0
 
         # for isho in np.arange(sho_limit[0] + 30, sho_limit[1] - 30, 0.1):
@@ -598,8 +598,8 @@ class RandomTarget_CO(Environment):
         conditions =  [1,2,3,4,5,6,7,8] 
         random_condition = np.random.choice(conditions)
         angle = np.pi / 4
-        posx = 0.2*np.sin(angle*random_condition)
-        posy = 0.2*np.cos(angle*random_condition) + 0.25
+        posx = 0.15*np.sin(angle*random_condition)
+        posy = 0.15*np.cos(angle*random_condition) + 0.45
         
 
         
